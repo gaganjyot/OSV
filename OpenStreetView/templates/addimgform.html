@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Quick Start Guide Example</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            width : 100%;
+        }
+       #map {
+	  height: 80%;
+          width : 80%;
+        }
+    </style>
+
+</head>
+<body>
+
+
+	<div id="map"></div>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+		var map = L.map('map').setView([51.5, -0.09], 13);
+
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		var mark = L.marker();
+		function onMapClick(e) {
+			$('#id_loc_x').attr('value', e.latlng.lat);
+			$('#id_loc_y').attr('value', e.latlng.lng);
+			//L.marker([e.latlng.lat, e.latlng.lng]).bindPopup("Selected.").addTo(map);
+                            mark.setLatLng(e.latlng);
+                            mark.addTo(map); 
+			alert("You Have selected : " + e.latlng + "Press submit to continue");
+		}
+
+		map.on('click', onMapClick);
+	</script>
+<form action="/addimage/" method="post">
+    {% csrf_token %}
+    {{ error }}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit" />
+</form>
+
+</body>
+</html>
+

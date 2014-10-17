@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Approve 'em</title>
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+  approve = function() {
+    var selected = new Array();
+    $("input:checkbox[name=chkimg]:checked").each(function() {
+      selected.push($(this).val());
+    });
+  
+    var postdata={
+     'approvedimages': selected, 
+     'csrfmiddlewaretoken': '{{ csrf_token }}'
+    }
+  
+    $.post("/approve/", postdata, function(data) {
+      console.log(data);
+      console.log(selected);
+    });
+  }
+</script>
+
+<table>
+<tr><th>Approve</th><th>Image</th><th>X Location</th><th>Y Location</th><th>Click</th></tr>
+{% for image in images %}
+<tr>
+   <td> <input type = "checkbox" name = "chkimg" value = "{{ image.pk }}"></input></td>
+   <td> <img src = 'http://127.0.0.1:3000/{{ image.image_path }}'></td>
+   <td> {{ image.location_x }}</td>
+   <td> {{ image.location_y }}</td>
+   <td> <input type = "button" value = "approve"  onclick="approve();"></td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>
